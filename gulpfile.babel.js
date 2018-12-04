@@ -29,6 +29,15 @@ gulp.task('css:sass', () => {
 gulp.task('css:css', () => {
     console.log('css in');
     return new Promise(resolve => {
+        gulp.src(`${ PATH.SRC.CSS }`) // html 폴더내의 css 폴더를 선택합니다. 
+        .pipe(cache.filter())
+        /* ie8 대응을 위한 추가입니다. 필요없다면 추가하지 않아도 됩니다. */
+        .pipe(cleanCSS({
+            compatibility: 'ie8'
+        }))
+        .pipe(cache.cache())
+        .pipe(gulp.dest(`${ PATH.DEST.CSS }`)); // 배포 폴더로 css 파일을 복사해줍니다.
+
         resolve();
     });
 });
