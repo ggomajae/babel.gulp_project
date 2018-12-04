@@ -85,7 +85,48 @@ let js = () => {
 
 // 코드 추가 
 function webpackFunc(evt) {
-    console.log(evt);
+    // 파일 경로와 파일 이름을 변수로 지정하였습니다. 
+    let path = evt.path;
+    // 경로중 파일이름만을 문자열로 잘라내어 변수에 담았습니다. 
+    let jsName = path.substr(path.lastIndexOf('\\') + 1, path.length);
+    // 임포트 했던 weback을 세팅합니다. 
+    webpack({
+        entry: {
+            entryName: `${ __dirname }/view/js/${ jsName }` // 파일 경로를 설정합니다. 
+        },
+        output: {
+            filename: jsName // 만들어질 파일명을 설정합니다. 
+        },
+        module: { // 모둘 세팅 
+            // 이곳에서 사용되는 모듈 과 플러그인들은 이전 포스팅에서모두 설치한 모듈들입니다. 
+            // 이모듈들은 ES 6 ~ 7 그리고 그 이상의 기술들을 사용하였을때 바벨이 오류를 뱉어내어 컴파일에 
+            // 실패하지 않기 위해 필요한 모듈들 모음입니다. 
+            loaders: [{
+                test: /\.js$/,
+                loader: 'babel-loader', // 바벨로더를 사용합니다. 
+                exclude: '/node_modules/',
+                query: {
+                    cacheDirectory: true,
+                    "presets": ['es2015', 'es2017', 'stage-3', 'react'], // 사용할 프리셋들
+                    // 프리셋 관련 정보는 https://babeljs.io/docs/en 에서 확인하실 수 있습니다. 
+                    "plugins": [
+                        'transform-decorators-legacy',
+                        'transform-class-properties',
+                        'transform-async-to-generator',
+                        'transform-object-assign',
+                        'transform-regenerator',
+                        ["transform-runtime", {
+                            "helpers": false, // defaults to true 
+                            "polyfill": false, // defaults to true 
+                            "regenerator": true, // defaults to true 
+                            "moduleName": "babel-runtime" // defaults to "babel-runtime" 
+                        }]
+                    ],
+                }
+            }]
+        }
+    }).pipe(gulp.dest(PATH.DEST.JS)); // 컴파일이 끝난 파일을 지정된 폴더에 생성합니다. 
+    // PATH.DEST.JS 경로는 html_build/js 로 지정되어있습니다. 
 }
 
 gulp.task('default', gulp.series(clean_old, css, js));
