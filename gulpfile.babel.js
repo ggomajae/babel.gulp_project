@@ -129,4 +129,17 @@ function webpackFunc(evt) {
     // PATH.DEST.JS 경로는 html_build/js 로 지정되어있습니다. 
 }
 
-gulp.task('default', gulp.series(clean_old, css, js));
+
+
+let ejsSet = () => {
+    console.log('ejsSet in');
+    return new Promise(resolve => {
+        gulp.src(PATH.SRC.EJS)
+            .pipe(gulp.dest(PATH.DEST.EJS));
+
+        resolve();
+    });
+}
+
+
+gulp.task('default', gulp.series(clean_old, css, js, ejsSet));

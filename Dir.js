@@ -13,12 +13,12 @@ module.exports = {
             JS: `${ DIR.SRC }/js/**/*.js`, // DIR.SRC + '/js/**/*.js' 와 같은 뜻 입니다.
             CSS: `${ DIR.SRC }/css/*.css`,
             SCSS: `${ DIR.SRC }/scss/**/*.scss`,
-            HTML: `${ DIR.SRC }/**/*.html`,
+            EJS: `${ DIR.SRC }/**/*.ejs`,
         },
         DEST: {
             JS: `${ DIR.DEST }/js`,
             CSS: `${ DIR.DEST }/css`,
-            HTML: `${ DIR.DEST }/`,
+            EJS: `${ DIR.DEST }/`,
         }
     }
 };
